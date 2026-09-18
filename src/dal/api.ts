@@ -34,19 +34,22 @@ export const getTrack = async (
     return await res.json();
   } catch (e) {
     console.warn("getTrack: fallback to mock", e);
-    const mock = MOCK_TRACK_DETAILS[trackId] ?? MOCK_TRACKS.find((t) => t.id === trackId);
-    if (!mock) throw e;
+
+    const details = MOCK_TRACK_DETAILS[trackId];
+    if (details) return { data: details };
+
+    const track = MOCK_TRACKS.find((t: Track) => t.id === trackId);
+    if (!track) throw e;
+
     return {
-      data: "attributes" in mock && "lyrics" in mock.attributes
-        ? (mock as TrackDetailsResource)
-        : {
-            id: mock.id,
-            attributes: {
-              title: mock.attributes.title,
-              lyrics: "",
-              attachments: mock.attributes.attachments,
-            },
-          },
+      data: {
+        id: track.id,
+        attributes: {
+          title: track.attributes.title,
+          lyrics: "",
+          attachments: track.attributes.attachments,
+        },
+      },
     };
   }
 };
