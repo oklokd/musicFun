@@ -1,7 +1,7 @@
 
 
 
-const apiKey = "248bf326-8e6d-4238-a151-5cd681a0ddb5";
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const headers: HeadersInit = {};
 if (apiKey) {
